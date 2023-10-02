@@ -97,8 +97,8 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives jar
     archives fatJar
-    archives jarLib
-    archives fatJarLib
+    //archives jarLib
+    //archives fatJarLib
     //archives javadocJar
     //archives sourcesJar
 }
