@@ -1,5 +1,5 @@
 /*
- * @fileoverview    {Video} se encarga de realizar tareas especificas.
+ * @fileoverview    {Video}
  *
  * @version         2.0
  *
@@ -9,8 +9,8 @@
  * @see             github.com/DysonParra
  *
  * History
- * @version 1.0     Implementación realizada el 11/09/2023.
- * @version 2.0     Documentación agregada el 11/09/2023.
+ * @version 1.0     Implementation done.
+ * @version 2.0     Documentation added.
  */
 package com.project.dev.struct;
 
