@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * TODO: Definición de {@code Video}.
+ * TODO: Description of {@code Video}.
  *
  * @author Dyson Parra
  * @since 11

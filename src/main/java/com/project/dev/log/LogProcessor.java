@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * TODO: Definición de {@code LogProcessor}.
+ * TODO: Description of {@code LogProcessor}.
  *
  * @author Dyson Parra
  * @since 11
@@ -43,7 +43,7 @@ public class LogProcessor {
     private static final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SS");
 
     /**
-     * TODO: Definición de {@code calculateDuration}.
+     * TODO: Description of {@code calculateDuration}.
      *
      * @param line
      * @param video
@@ -82,7 +82,7 @@ public class LogProcessor {
     }
 
     /**
-     * TODO: Definición de {@code processFlags}.
+     * TODO: Description of {@code processFlags}.
      *
      * @param flags
      * @return
