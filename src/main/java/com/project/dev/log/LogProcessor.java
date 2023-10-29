@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * TODO: Definición de {@code LogProcessor}.
  *
  * @author Dyson Parra
- * @since 1.8
+ * @since 11
  */
 public class LogProcessor {
 
