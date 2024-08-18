@@ -82,6 +82,29 @@ public class LogProcessor {
     }
 
     /**
+     * TODO: Description of {@code getVideos}.
+     *
+     * @param line
+     * @param ffmpegVideos
+     * @return
+     */
+    private static boolean addVideoPath(String line, List<String> ffmpegVideos) {
+
+        String regex = "Output file:\\s*.*\\\\(.*?)";
+
+        if (line.matches(regex)) {
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(line);
+            matcher.matches();
+            String path = matcher.group(1);
+            //System.out.println("'" + path + "'");
+            ffmpegVideos.add(path + ".log");
+        }
+
+        return true;
+    }
+
+    /**
      * TODO: Description of {@code processFlags}.
      *
      * @param flags
@@ -93,9 +116,16 @@ public class LogProcessor {
 
         Map<String, String> flagsMap = FlagMap.convertFlagsArrayToMap(flags);
         String logsPath = flagsMap.get("-logsPath");
+        String ffmpegLogFilePath = flagsMap.get("-ffmpegLogFilePath");
         String outputPath = flagsMap.get("-outputPath");
+        String outputDurationsFile = "durations.log";
+        String outputComparedFile = "comparation.log";
 
         List<Video> videos = new ArrayList<>();
+        List<String> ffmpegFiles = new ArrayList<>();
+        List<String> logFiles = new ArrayList<>();
+        List<String> onlylogFiles = new ArrayList<>();
+        List<String> onlyFfmpegFiles = new ArrayList<>();
         List<File> files = new ArrayList<>();
 
         if (!FileProcessor.validatePath(logsPath)) {
@@ -105,27 +135,58 @@ public class LogProcessor {
             System.out.println("Invalid path in flag '-outputPath'");
             result = false;
         } else {
+            result = FileProcessor.forEachLine(ffmpegLogFilePath, LogProcessor::addVideoPath, ffmpegFiles);
             FileProcessor.getFiles(new File(logsPath), new String[]{"log"}, files);
-
             for (File file : files) {
-                System.out.println(file);
-                Video video = Video.builder().path(file.getPath()).build();
+                System.out.println(file.getName());
+                logFiles.add(file.getName());
+                Video video = Video.builder().path(file.getName()).build();
                 videos.add(video);
                 result = FileProcessor.forEachLine(file.getPath(), LogProcessor::calculateDuration, video);
                 video.setSecondsDiff(video.getExpectDuration() - video.getDuration());
             }
+
             try {
-                try (FileWriter myWriter = new FileWriter(outputPath + "\\output.log")) {
+                try (FileWriter myWriter = new FileWriter(outputPath + "\\" + outputDurationsFile)) {
                     for (Video video : videos) {
                         //System.out.println(video);
                         myWriter.write(video.toString() + "\n");
                     }
                 }
-                System.out.println("Successfully wrote to the file.");
+                System.out.println(String.format("Successfully wrote to the file '%s'", outputDurationsFile));
             } catch (IOException e) {
                 System.out.println("An error occurred.");
             }
+            for (String file : ffmpegFiles)
+                if (!logFiles.contains(file))
+                    onlyFfmpegFiles.add(file);
 
+            for (String file : logFiles)
+                if (!ffmpegFiles.contains(file))
+                    onlylogFiles.add(file);
+
+            System.out.println("");
+            System.out.println("Only in Ffmpeg: " + onlyFfmpegFiles.size());
+            System.out.println("Only log File:  " + onlylogFiles.size());
+
+            try {
+                try (FileWriter myWriter = new FileWriter(outputPath + "\\" + outputComparedFile)) {
+                    myWriter.write("Only in ffmpeg.log:\n");
+                    for (String file : onlyFfmpegFiles) {
+                        //System.out.println(file);
+                        myWriter.write(file + "\n");
+                    }
+
+                    myWriter.write("\n\nOnly exists the log file:\n");
+                    for (String file : onlylogFiles) {
+                        //System.out.println(file);
+                        myWriter.write(file + "\n");
+                    }
+                }
+                System.out.println(String.format("Successfully wrote to the file '%s'", outputComparedFile));
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+            }
         }
         return result;
     }

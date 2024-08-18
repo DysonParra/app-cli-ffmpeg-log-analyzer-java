@@ -36,6 +36,7 @@ public class Application {
 
         String requiredFlags[][] = {
             {"-logsPath"},
+            {"-ffmpegLogFilePath"},
             {"-outputPath"}
         };
 
@@ -45,6 +46,8 @@ public class Application {
         String defaultArgs[] = {
             "-logsPath",
             "res\\log",
+            "-ffmpegLogFilePath",
+            "res\\ffmpeg.log",
             "-outputPath",
             "res\\output",
         };
