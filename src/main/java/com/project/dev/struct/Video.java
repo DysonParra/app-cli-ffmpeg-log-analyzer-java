@@ -38,6 +38,10 @@ public class Video {
     float secondsDiff;
     String path;
 
+    /**
+     * TODO: Description of {@code toString}.
+     *
+     */
     @Override
     public String toString() {
         return String.format("%9.5f", secondsDiff) + "     " + expectDurationStr + "    " + durationStr + "     \"" + path + "\"";
